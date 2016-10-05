@@ -1,4 +1,4 @@
-all: includes/default.html includes/default.tex filters/amsthm.py filters/pandoc-criticmarkup.sh filters/criticmarkup-reject.py filters/criticmarkup-accept.py
+all: includes/default.html includes/default.tex filters/amsthm.py bin/pandoc-criticmarkup.sh bin/criticmarkup-reject.py bin/criticmarkup-accept.py
 
 # amsthm and other includes
 includes/default.html: submodule/markdown-latex-css/submodule/pandoc-amsthm/template/include/pandoc-amsthm.html submodule/markdown-latex-css/js/mathjax/setup-mathjax-cdn.html
@@ -10,13 +10,13 @@ filters/amsthm.py: submodule/markdown-latex-css/submodule/pandoc-amsthm/bin/pand
 	cp $< $@
 
 # Criticmarkdup
-filters/pandoc-criticmarkup.sh: submodule/pandoc-criticmarkup/pandoc-criticmarkup.sh
+bin/pandoc-criticmarkup.sh: submodule/pandoc-criticmarkup/pandoc-criticmarkup.sh
 	mkdir -p filters
 	cp $< $@
-filters/criticmarkup-reject.py: submodule/pandoc-criticmarkup/criticmarkup-reject.py
+bin/criticmarkup-reject.py: submodule/pandoc-criticmarkup/criticmarkup-reject.py
 	mkdir -p filters
 	cp $< $@
-filters/criticmarkup-accept.py: submodule/pandoc-criticmarkup/criticmarkup-accept.py
+bin/criticmarkup-accept.py: submodule/pandoc-criticmarkup/criticmarkup-accept.py
 	mkdir -p filters
 	cp $< $@
 
@@ -26,4 +26,4 @@ init:
 update:
 	git submodule foreach git pull origin
 
-clean: includes/default.html includes/default.tex
+clean: includes/default.html includes/default.tex filters/amsthm.py bin/pandoc-criticmarkup.sh bin/criticmarkup-reject.py bin/criticmarkup-accept.py
