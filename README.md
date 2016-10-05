@@ -8,7 +8,7 @@ this is my setup of the pandoc `data-dir`. It should be put in `$HOME/.pandoc`.
 
 # `pandoc.sh`
 
-`pandoc.sh` takes the most common pandoc arguments, preprocessor, templates that I personally used in one package.
+`bin/pandoc.sh` takes the most common pandoc arguments, preprocessor, filters, templates that I personally used in one package.
 
 The options are:
 
