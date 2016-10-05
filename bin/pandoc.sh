@@ -47,12 +47,8 @@ argAlways="--normalize -s"
 
 # read file into a variable
 ## If from md, preprocessor
-if [ "$EXT" = "md" ];  then
-	if [ "to_format" = "html" ] || [ "to_format" = "tex" ] || [ "to_format" = "pdf" ]; then
-		FILE=$(pandoc-criticmarkup.sh -d $to_format "$PATHNAME")
-	else
-		FILE=$(<"$PATHNAME")
-	fi
+if [ "$EXT" = "md" ] && ([ "to_format" = "html" ] || [ "to_format" = "tex" ] || [ "to_format" = "pdf" ]);  then
+	FILE=$(pandoc-criticmarkup.sh -d $to_format "$PATHNAME")
 else
 	FILE=$(<"$PATHNAME")
 fi
@@ -65,7 +61,7 @@ if [ "$EXT" = "md" ]; then
 fi
 if [ "$to_format" = "md" ]; then
 	arg+=" $argToMarkdown"
-elif [ "$to_format" = "tex" ]; then
+elif [ "$to_format" = "tex" ] || [ "$to_format" = "pdf" ]; then
 	arg+=" $argToTeX"
 elif [ "$to_format" = "html" ]; then
 	arg+=" $argToHTML"
@@ -81,7 +77,7 @@ fi
 # output
 if [ "$to_format" = "html" ]; then
 	echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT.$to_format" -H <(echo "$FILE" | pandoc --template=$HOME/.pandoc/includes/default.html)
-elif [ "$to_format" = "tex" ]; then
+elif [ "$to_format" = "tex" ] || [ "$to_format" = "pdf" ]; then
 	echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT.$to_format" -H <(echo "$FILE" | pandoc --template=$HOME/.pandoc/includes/default.tex)
 elif [ "$EXT" = "md" ] && [ "$to_format" = "md" ]; then
 	echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT-pandoc.$to_format"
