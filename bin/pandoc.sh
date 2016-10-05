@@ -53,7 +53,7 @@ else
 	FILE=$(<"$PATHNAME")
 fi
 
-# set whole arg
+# set pandoc args
 arg="$argAlways"
 ## set argTo/From
 if [ "$EXT" = "md" ]; then
