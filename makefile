@@ -6,7 +6,9 @@ includes/default.html: submodule/markdown-latex-css/submodule/pandoc-amsthm/temp
 includes/default.tex: includes/hypersetup.latex includes/usepackage.latex submodule/markdown-latex-css/submodule/pandoc-amsthm/template/include/pandoc-amsthm.latex includes/ucharclasses.latex
 	cat $^ > $@
 
-# update submodule
+# Submodule
+init:
+	git submodule update --init --recursive
 update:
 	git pull --recurse-submodules
 
