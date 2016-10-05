@@ -66,21 +66,16 @@ if [ $pandoc_biblatex = true ]; then
 	arg+=" --biblatex"
 fi
 
-# read file into a variable
-## If from md, preprocessor
-if [ "$EXT" = "md" ] && ([ "to_format" = "html" ] || [ "to_format" = "tex" ] || [ "to_format" = "pdf" ]);  then
-	FILE=$(pandoc-criticmarkup.sh -d $to_format "$PATHNAME")
-else
-	FILE=$(<"$PATHNAME")
-fi
-
 # output
-if [ "$to_format" = "html" ]; then
-	echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT.$to_format" -H <(echo "$FILE" | pandoc --template=$HOME/.pandoc/includes/default.html)
-elif [ "$to_format" = "tex" ] || [ "$to_format" = "pdf" ]; then
-	echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT.$to_format" -H <(echo "$FILE" | pandoc --template=$HOME/.pandoc/includes/default.tex)
-elif [ "$EXT" = "md" ] && [ "$to_format" = "md" ]; then
-	echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT-pandoc.$to_format"
+if [ "$EXT" = "md" ] && ([ "to_format" = "html" ] || [ "to_format" = "tex" ] || [ "to_format" = "pdf" ]);  then
+	FILE=$(pandoc-criticmarkup.sh -d $to_format "$PATHNAME") # preprocess and read to a var
+	if [ "$to_format" = "html" ]; then
+		echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT.$to_format" -H <(echo "$FILE" | pandoc --template=$HOME/.pandoc/includes/default.html)
+	elif [ "$to_format" = "tex" ] || [ "$to_format" = "pdf" ]; then
+		echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT.$to_format" -H <(echo "$FILE" | pandoc --template=$HOME/.pandoc/includes/default.tex)
+	fi
+elif [ "$EXT" = "$to_format" ]; then
+	pandoc $arg -o "$PATHNAMEWOEXT-pandoc.$to_format" "$PATHNAME"
 else
-	echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT.$to_format"
+	pandoc $arg -o "$PATHNAMEWOEXT.$to_format" "$PATHNAME"
 fi
