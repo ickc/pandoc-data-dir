@@ -1,0 +1,17 @@
+$if(ucharclasses)$
+  \usepackage[Latin$if(ucharclassesgreek)$,Greek$endif$$if(ucharclasseshebrew)$,Hebrew$endif$]{ucharclasses}
+  \usepackage{xltxtra,xunicode}
+  \usepackage{unicode-math}
+    \newcommand{\latinfont}{\renewcommand\rmdefault{lmr}\renewcommand\sfdefault{lmss}\renewcommand\ttdefault{lmtt}\defaultfontfeatures[\rmfamily,\sffamily]{Ligatures=TeX}}
+  \setTransitionsForLatin{\latinfont}{}
+$if(ucharclassesgreek)$
+  \newfontfamily\greekfont{$ucharclassesgreekfont$}
+  \setTransitionsForGreek{\greekfont}{}
+$endif$
+$if(ucharclasseshebrew)$
+  \newfontfamily\hebrewfont{$ucharclasseshebrewfont$}
+  \setTransitionsForGreek{\hebrewfont\setRTL}{\setLTR}
+  \usepackage{bidi}
+$endif$
+$else$
+$endif$
