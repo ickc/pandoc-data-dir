@@ -45,14 +45,6 @@ argToTeX="-V linkcolorblue -V citecolor=blue -V urlcolor=blue -V toccolor=blue -
 argToHTML="-c https://ickc.github.io/markdown-latex-css/css/markdown-latex-lmodern.css --mathjax"
 argAlways="--normalize -s"
 
-# read file into a variable
-## If from md, preprocessor
-if [ "$EXT" = "md" ] && ([ "to_format" = "html" ] || [ "to_format" = "tex" ] || [ "to_format" = "pdf" ]);  then
-	FILE=$(pandoc-criticmarkup.sh -d $to_format "$PATHNAME")
-else
-	FILE=$(<"$PATHNAME")
-fi
-
 # set pandoc args
 arg="$argAlways"
 ## set argTo/From
@@ -72,6 +64,14 @@ if [ $pandoc_citeproc = true ]; then
 fi
 if [ $pandoc_biblatex = true ]; then
 	arg+=" --biblatex"
+fi
+
+# read file into a variable
+## If from md, preprocessor
+if [ "$EXT" = "md" ] && ([ "to_format" = "html" ] || [ "to_format" = "tex" ] || [ "to_format" = "pdf" ]);  then
+	FILE=$(pandoc-criticmarkup.sh -d $to_format "$PATHNAME")
+else
+	FILE=$(<"$PATHNAME")
 fi
 
 # output
