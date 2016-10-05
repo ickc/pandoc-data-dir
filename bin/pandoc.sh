@@ -46,7 +46,16 @@ argToHTML="-c https://ickc.github.io/markdown-latex-css/css/markdown-latex-lmode
 argAlways="--normalize -s"
 
 # read file into a variable
-FILE=$(<"$PATHNAME")
+## If from md, preprocessor
+if [ "$EXT" = "md" ];  then
+	if [ "to_format" = "html" ] || [ "to_format" = "tex" ] || [ "to_format" = "pdf" ]; then
+		FILE=$(pandoc-criticmarkup.sh -d $to_format "$PATHNAME")
+	else
+		FILE=$(<"$PATHNAME")
+	fi
+else
+	FILE=$(<"$PATHNAME")
+fi
 
 # set whole arg
 arg="$argAlways"
@@ -68,18 +77,14 @@ fi
 if [ $pandoc_biblatex = true ]; then
 	arg+=" --biblatex"
 fi
-## Header
-if [ "$to_format" = "html" ]; then
-	HEADER=$(echo "$FILE" | pandoc --template=includes/default.html)
-	arg+=' -H <($HEADER)'
-fi
-if [ "$to_format" = "tex" ]; then
-	HEADER=$(echo "$FILE" | pandoc --template=includes/default.tex)
-	arg+=' -H <($HEADER)'
-fi
 
-# If from md, preprocessor
-if [ "$EXT" = "md" ];  then
-	FILE=$(echo "$FILE" | pandoc-criticmarkup.sh -d $to_format)
+# output
+if [ "$to_format" = "html" ]; then
+	echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT.$to_format" -H <(echo "$FILE" | pandoc --template=$HOME/.pandoc/includes/default.html)
+elif [ "$to_format" = "tex" ]; then
+	echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT.$to_format" -H <(echo "$FILE" | pandoc --template=$HOME/.pandoc/includes/default.tex)
+elif [ "$EXT" = "md" ] && [ "$to_format" = "md" ]; then
+	echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT-pandoc.$to_format"
+else
+	echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT.$to_format"
 fi
-echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT.$to_format"
