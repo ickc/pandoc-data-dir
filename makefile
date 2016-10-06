@@ -40,5 +40,5 @@ init:
 update:
 	git submodule update --recursive --remote
 
-clean: filters/amsthm.py includes/default.tex includes/common.css includes/default.html includes/default.css bin/pandoc-criticmarkup.sh bin/criticmarkup-reject.py bin/criticmarkup-accept.py
-	rm -f $^
+clean:
+	rm -f filters/amsthm.py includes/default.tex includes/common.css includes/default.html includes/default.css bin/pandoc-criticmarkup.sh bin/criticmarkup-reject.py bin/criticmarkup-accept.py
