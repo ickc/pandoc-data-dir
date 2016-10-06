@@ -8,7 +8,7 @@ includes/default.tex: includes/hypersetup.latex includes/usepackage.latex submod
 	cat $+ > $@
 ## The followings are for HTML output:
 ### needed by default.html/css. Basically is default.css without amsthm
-includes/common.css: submodule/markdown-latex-css/_sass/_system-fonts-lmodern.scss submodule/markdown-latex-css/_sass/_mmdc-print.scss submodule/markdown-latex-css/_sass/_list.scss submodule/markdown-latex-css/_sass/_table.scss submodule/markdown-latex-css/_sass/_toc.scss submodule/markdown-latex-css/_sass/_heading.scss
+includes/common.css: submodule/markdown-latex-css/_sass/_system-fonts-lmodern.scss submodule/markdown-latex-css/_sass/_mmdc-print.scss submodule/markdown-latex-css/_sass/_list.scss submodule/markdown-latex-css/_sass/_table.scss
 	cat $+ > $@
 	sed -i '' 's/@charset "UTF-8";//g' $@
 ### template snippet (pandoc.sh uses this)
