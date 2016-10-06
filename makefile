@@ -24,6 +24,6 @@ bin/criticmarkup-accept.py: submodule/pandoc-criticmarkup/criticmarkup-accept.py
 init:
 	git submodule update --init --recursive
 update:
-	git submodule foreach git pull origin
+	git submodule update --recursive --remote
 
 clean: includes/default.html includes/default.tex filters/amsthm.py bin/pandoc-criticmarkup.sh bin/criticmarkup-reject.py bin/criticmarkup-accept.py
