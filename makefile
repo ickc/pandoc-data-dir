@@ -1,4 +1,4 @@
-all: includes/default.html includes/default.css includes/default.tex filters/amsthm.py bin/pandoc-criticmarkup.sh bin/criticmarkup-reject.py bin/criticmarkup-accept.py
+all: filters/amsthm.py includes/default.tex includes/default.html includes/default-static.html includes/default-static.css bin/pandoc-criticmarkup.sh bin/criticmarkup-reject.py bin/criticmarkup-accept.py
 
 # amsthm and other includes
 filters/amsthm.py: submodule/markdown-latex-css/submodule/pandoc-amsthm/bin/pandoc-amsthm.py
@@ -13,8 +13,14 @@ includes/default.html: submodule/markdown-latex-css/_sass/_system-fonts-lmodern.
 	sed -e 's/<style type="text\/css">//g' -e 's/<\/style>//g' submodule/markdown-latex-css/submodule/pandoc-amsthm/template/include/pandoc-amsthm.html >> $@
 	echo '</style>' >> $@
 	cat submodule/markdown-latex-css/js/mathjax/setup-mathjax-cdn.html >> $@
-## default.css is not a pandoc template. Notice it uses pandoc-amsthm/template/include/default.html instead of pandoc-amsthm/template/include/pandoc-amsthm.html
-includes/default.css: submodule/markdown-latex-css/_sass/_system-fonts-lmodern.scss submodule/markdown-latex-css/_sass/_mmdc-print.scss submodule/markdown-latex-css/_sass/_list.scss submodule/markdown-latex-css/_sass/_table.scss submodule/markdown-latex-css/submodule/pandoc-amsthm/template/include/default.html
+includes/default-static.html: submodule/markdown-latex-css/_sass/_system-fonts-lmodern.scss submodule/markdown-latex-css/_sass/_mmdc-print.scss submodule/markdown-latex-css/_sass/_list.scss submodule/markdown-latex-css/_sass/_table.scss submodule/markdown-latex-css/submodule/pandoc-amsthm/template/include/default.html submodule/markdown-latex-css/js/mathjax/setup-mathjax-cdn.html
+	echo '<style type="text/css">' > $@
+	cat submodule/markdown-latex-css/_sass/_system-fonts-lmodern.scss submodule/markdown-latex-css/_sass/_mmdc-print.scss submodule/markdown-latex-css/_sass/_list.scss submodule/markdown-latex-css/_sass/_table.scss >> $@
+	sed -i '' 's/@charset "UTF-8";//g' $@
+	sed -e 's/<style type="text\/css">//g' -e 's/<\/style>//g' submodule/markdown-latex-css/submodule/pandoc-amsthm/template/include/default.html >> $@
+	echo '</style>' >> $@
+	cat submodule/markdown-latex-css/js/mathjax/setup-mathjax-cdn.html >> $@
+includes/default-static.css: submodule/markdown-latex-css/_sass/_system-fonts-lmodern.scss submodule/markdown-latex-css/_sass/_mmdc-print.scss submodule/markdown-latex-css/_sass/_list.scss submodule/markdown-latex-css/_sass/_table.scss submodule/markdown-latex-css/submodule/pandoc-amsthm/template/include/default.html
 	cat submodule/markdown-latex-css/_sass/_system-fonts-lmodern.scss submodule/markdown-latex-css/_sass/_mmdc-print.scss submodule/markdown-latex-css/_sass/_list.scss submodule/markdown-latex-css/_sass/_table.scss > $@
 	sed -i '' 's/@charset "UTF-8";//g' $@
 	sed -e 's/<style type="text\/css">//g' -e 's/<\/style>//g' submodule/markdown-latex-css/submodule/pandoc-amsthm/template/include/default.html >> $@
@@ -36,4 +42,4 @@ init:
 update:
 	git submodule update --recursive --remote
 
-clean: includes/default.html includes/default.tex filters/amsthm.py bin/pandoc-criticmarkup.sh bin/criticmarkup-reject.py bin/criticmarkup-accept.py
+clean: filters/amsthm.py includes/default.tex includes/default.html includes/default-static.html includes/default-static.css bin/pandoc-criticmarkup.sh bin/criticmarkup-reject.py bin/criticmarkup-accept.py
