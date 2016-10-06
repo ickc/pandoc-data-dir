@@ -42,7 +42,7 @@ argFromMarkdown="-f $fromMarkdown -S --base-header-level=1 --toc --toc-depth=6 -
 toMarkdown="markdown-simple_tables-multiline_tables-grid_tables"
 argToMarkdown="-t $toMarkdown --wrap=none --atx-headers --extract-media=\"$PATHNAMEWOEXT\""
 argToTeX="-V linkcolorblue -V citecolor=blue -V urlcolor=blue -V toccolor=blue --filter=pandoc-amsthm.py"
-argToHTML="-c https://ickc.github.io/markdown-latex-css/css/markdown-latex-lmodern.css --mathjax"
+argToHTML="--mathjax"
 argAlways="--normalize -s"
 
 # set pandoc args
