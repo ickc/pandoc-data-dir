@@ -22,6 +22,8 @@ includes/default.html: includes/common.css submodule/markdown-latex-css/submodul
 includes/default.css: includes/common.css submodule/markdown-latex-css/submodule/pandoc-amsthm/template/include/default.html
 	cat $< > $@
 	sed -e 's/<style type="text\/css">//g' -e 's/<\/style>//g' submodule/markdown-latex-css/submodule/pandoc-amsthm/template/include/default.html >> $@
+	csso $@ $@
+	cssnano $@ $@
 
 # Criticmarkdup
 bin/pandoc-criticmarkup.sh: submodule/pandoc-criticmarkup/pandoc-criticmarkup.sh
