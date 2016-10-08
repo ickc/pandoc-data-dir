@@ -39,7 +39,7 @@ DIRECTORY=${PATHNAME%/*}
 # define commonly used pandoc arg
 fromMarkdown="markdown+abbreviations+autolink_bare_uris+markdown_attribute+mmd_header_identifiers+mmd_link_attributes+mmd_title_block+tex_math_double_backslash-fancy_lists"
 argFromMarkdown="-f $fromMarkdown -S --base-header-level=1 --toc --toc-depth=6 -N"
-toMarkdown="markdown-simple_tables-multiline_tables-grid_tables"
+toMarkdown="markdown-simple_tables-multiline_tables-grid_tables" # -simple_tables-multiline_tables-grid_tables-pipe_tables
 argToMarkdown="-t $toMarkdown --wrap=none --atx-headers --extract-media=\"$PATHNAMEWOEXT\""
 argToTeX="-V linkcolorblue -V citecolor=blue -V urlcolor=blue -V toccolor=blue --filter=pandoc-amsthm.py"
 argToHTML="--mathjax"
