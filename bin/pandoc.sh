@@ -37,19 +37,21 @@ DIRECTORY=${PATHNAME%/*}
 # ext="${EXT,,}" #This does not work on Mac's default, old version of, bash.
 
 # define commonly used pandoc arg
-fromMarkdown="markdown+abbreviations+autolink_bare_uris+markdown_attribute+mmd_header_identifiers+mmd_link_attributes+mmd_title_block+tex_math_double_backslash-fancy_lists"
-argFromMarkdown="-f $fromMarkdown -S --base-header-level=1 --toc --toc-depth=6 -N"
-toMarkdown="markdown-fancy_lists-raw_html-native_divs-native_spans-simple_tables-multiline_tables-grid_tables" # -simple_tables-multiline_tables-grid_tables-pipe_tables
-argToMarkdown="-t $toMarkdown --wrap=none --atx-headers --extract-media=\"$PATHNAMEWOEXT\""
-argToTeX="-V linkcolorblue -V citecolor=blue -V urlcolor=blue -V toccolor=blue --filter=pandoc-amsthm.py"
+argFromMarkdown="-f markdown+abbreviations+autolink_bare_uris+markdown_attribute+mmd_header_identifiers+mmd_link_attributes+mmd_title_block+tex_math_double_backslash-fancy_lists"
+argToMarkdown="-t markdown-fancy_lists-raw_html-native_divs-native_spans-simple_tables-multiline_tables-grid_tables" # -simple_tables-multiline_tables-grid_tables-pipe_tables
+argToTeX="-V linkcolor=blue -V citecolor=blue -V urlcolor=blue -V toccolor=blue --filter=pandoc-amsthm.py"
 argToHTML="--mathjax"
-argAlways="--normalize -s"
+argAlways="--normalize -s --wrap=none --atx-headers --extract-media=\"$PATHNAMEWOEXT\""
+argAlwaysExceptNonMDToMD="-S --toc --toc-depth=6 -N"
 
 # set pandoc args
 arg="$argAlways"
 ## set argTo/From
 if [ "$EXT" = "md" ]; then
 	arg+=" $argFromMarkdown"
+fi 
+if [ "$EXT" = "md" ] || [ "$to_format" != "md" ]; then
+	arg+=" $argAlwaysExceptNonMDToMD"
 fi
 if [ "$to_format" = "md" ]; then
 	arg+=" $argToMarkdown"
