@@ -1,7 +1,7 @@
-all: filters/amsthm.py includes/default.tex includes/common.css includes/default.html includes/default.css bin/pandoc-criticmarkup.sh bin/criticmarkup-reject.py bin/criticmarkup-accept.py
+all: filters/pandoc-amsthm.py includes/default.tex includes/common.css includes/default.html includes/default.css bin/pandoc-criticmarkup.sh bin/criticmarkup-reject.py bin/criticmarkup-accept.py
 
 # amsthm and other includes
-filters/amsthm.py: submodule/markdown-latex-css/submodule/pandoc-amsthm/bin/pandoc-amsthm.py
+filters/pandoc-amsthm.py: submodule/markdown-latex-css/submodule/pandoc-amsthm/bin/pandoc-amsthm.py
 	mkdir -p filters
 	cp $< $@
 includes/default.tex: includes/hypersetup.latex includes/usepackage.latex submodule/markdown-latex-css/submodule/pandoc-amsthm/template/include/pandoc-amsthm.latex includes/ucharclasses.latex
@@ -42,4 +42,4 @@ update:
 	git submodule update --recursive --remote
 
 clean:
-	rm -f filters/amsthm.py includes/default.tex includes/common.css includes/default.html includes/default.css bin/pandoc-criticmarkup.sh bin/criticmarkup-reject.py bin/criticmarkup-accept.py
+	rm -f filters/pandoc-amsthm.py includes/default.tex includes/common.css includes/default.html includes/default.css bin/pandoc-criticmarkup.sh bin/criticmarkup-reject.py bin/criticmarkup-accept.py
