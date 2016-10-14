@@ -10,13 +10,16 @@ pandoc_biblatex=false
 pandoc_citeproc=false
 latex_engine=pdflatex
 to_format=html
+overwrite=false
 
 ## get the options
-while getopts "bce:t:" opt; do
+while getopts "bcoe:t:" opt; do
 	case "$opt" in
 	b)	pandoc_biblatex=true
 		;;
 	c)	pandoc_citeproc=true
+		;;
+	o)	overwrite=true
 		;;
 	e)	latex_engine=$OPTARG
 		;;
@@ -48,36 +51,36 @@ argAlwaysExceptNonMDToMD="-S --toc --toc-depth=6 -N"
 # set pandoc args
 arg="$argAlways"
 ## set argTo/From
-if [ "$EXT" = "md" ]; then
+if [[ "$EXT" = "md" ]]; then
 	arg+=" $argFromMarkdown"
-fi 
-if [ "$EXT" = "md" ] || [ "$to_format" != "md" ]; then
-	arg+=" $argAlwaysExceptNonMDToMD"
 fi
-if [ "$to_format" = "md" ]; then
+if [[ "$overwrite" = "false" && ( "$EXT" = "md" || "$to_format" != "md" ) ]]; then
+		arg+=" $argAlwaysExceptNonMDToMD"
+fi
+if [[ "$to_format" = "md" ]]; then
 	arg+=" $argToMarkdown"
-elif [ "$to_format" = "tex" ] || [ "$to_format" = "pdf" ]; then
+elif [[ "$to_format" = "tex" || "$to_format" = "pdf" ]]; then
 	arg+=" $argToTeX"
-elif [ "$to_format" = "html" ]; then
+elif [[ "$to_format" = "html" ]]; then
 	arg+=" $argToHTML"
 fi
 ## set citeproc, biblatex
-if [ $pandoc_citeproc = true ]; then
+if [[ "$pandoc_citeproc" = "true" ]]; then
 	arg+=" --filter=pandoc-citeproc"
 fi
-if [ $pandoc_biblatex = true ]; then
+if [[ "$pandoc_biblatex" = "true" ]]; then
 	arg+=" --biblatex"
 fi
 
 # output
-if [ "$EXT" = "md" ] && ([ "$to_format" = "html" ] || [ "$to_format" = "tex" ] || [ "$to_format" = "pdf" ]);  then
+if [[ "$EXT" = "md" && ( "$to_format" = "html" || "$to_format" = "tex" || "$to_format" = "pdf" ) ]];  then
 	FILE=$(cat "$PATHNAME" | pandoc-criticmarkup.sh -d $to_format) # preprocess and read to a var
-	if [ "$to_format" = "html" ]; then
+	if [[ "$to_format" = "html" ]]; then
 		echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT.$to_format" -H <(echo "$FILE" | pandoc --template=$HOME/.pandoc/includes/default.html)
-	elif [ "$to_format" = "tex" ] || [ "$to_format" = "pdf" ]; then
+	elif [[ "$to_format" = "tex" || "$to_format" = "pdf" ]]; then
 		echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT.$to_format" -H <(echo "$FILE" | pandoc --template=$HOME/.pandoc/includes/default.tex)
 	fi
-elif [ "$EXT" = "$to_format" ]; then
+elif [[ "$overwrite" = "false" && "$EXT" = "$to_format" ]]; then
 	pandoc $arg -o "$PATHNAMEWOEXT-pandoc.$to_format" "$PATHNAME"
 else
 	pandoc $arg -o "$PATHNAMEWOEXT.$to_format" "$PATHNAME"
