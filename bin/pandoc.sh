@@ -33,7 +33,7 @@ shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
 
 # get paths and extension
-PATHNAME="$@"
+PATHNAME=$(realpath $@)
 PATHNAMEWOEXT="${PATHNAME%.*}"
 EXT="${PATHNAME##*.}"
 DIRECTORY="${PATHNAME%/*}"
