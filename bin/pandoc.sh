@@ -33,11 +33,12 @@ shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
 
 # get paths and extension
-PATHNAME=$(realpath $@)
+PATHNAME="$(realpath "$@")"
 PATHNAMEWOEXT="${PATHNAME%.*}"
 EXT="${PATHNAME##*.}"
 DIRECTORY="${PATHNAME%/*}"
 filename="${PATHNAMEWOEXT##*/}"
+filenameASCII=$(echo $filename | sed -e 's/[^A-Za-z0-9._-]/_/g')
 # ext="${EXT,,}" #This does not work on Mac's default, old version of, bash.
 
 # define commonly used pandoc arg
@@ -45,7 +46,7 @@ argFromMarkdown="-f markdown+abbreviations+autolink_bare_uris+markdown_attribute
 argToMarkdown="-t markdown-fancy_lists-raw_html-native_divs-native_spans-simple_tables-multiline_tables-grid_tables" # -simple_tables-multiline_tables-grid_tables-pipe_tables
 argToTeX="-V linkcolor=blue -V citecolor=blue -V urlcolor=blue -V toccolor=blue --filter=pandoc-amsthm.py"
 argToHTML="--mathjax"
-argAlways="--normalize -s --wrap=none --atx-headers --extract-media=\"$filename\""
+argAlways="--normalize -s --wrap=none --atx-headers --extract-media=$filenameASCII"
 argAlwaysExceptNonMDToMD="-S --toc --toc-depth=6 -N"
 
 # set pandoc args
