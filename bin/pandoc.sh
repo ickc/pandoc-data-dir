@@ -77,12 +77,12 @@ fi
 if [[ "$EXT" = "md" && ( "$to_format" = "html" || "$to_format" = "tex" || "$to_format" = "pdf" ) ]];  then
 	FILE=$(pandoc-criticmarkup.sh -d $to_format "$PATHNAME") # preprocess and read to a var
 	if [[ "$to_format" = "html" ]]; then
-		echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT.$to_format" -H <(echo "$FILE" | pandoc --template=$HOME/.pandoc/includes/default.html)
+		echo "$FILE" | pandoc $arg -M date="$(date "+%B %e, %Y")" -o "$PATHNAMEWOEXT.$to_format" -H <(echo "$FILE" | pandoc --template=$HOME/.pandoc/includes/default.html)
 	elif [[ "$to_format" = "tex" || "$to_format" = "pdf" ]]; then
-		echo "$FILE" | pandoc $arg -o "$PATHNAMEWOEXT.$to_format" -H <(echo "$FILE" | pandoc --template=$HOME/.pandoc/includes/default.tex)
+		echo "$FILE" | pandoc $arg -M date="$(date "+%B %e, %Y")" -o "$PATHNAMEWOEXT.$to_format" -H <(echo "$FILE" | pandoc --template=$HOME/.pandoc/includes/default.tex)
 	fi
 elif [[ "$overwrite" = "false" && "$EXT" = "$to_format" ]]; then
-	pandoc $arg -o "$PATHNAMEWOEXT-pandoc.$to_format" "$PATHNAME"
+	pandoc $arg -M date="$(date "+%B %e, %Y")" -o "$PATHNAMEWOEXT-pandoc.$to_format" "$PATHNAME"
 else
-	pandoc $arg -o "$PATHNAMEWOEXT.$to_format" "$PATHNAME"
+	pandoc $arg -M date="$(date "+%B %e, %Y")" -o "$PATHNAMEWOEXT.$to_format" "$PATHNAME"
 fi
