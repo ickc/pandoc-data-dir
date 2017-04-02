@@ -5,7 +5,18 @@ if [[ $DEBUG ]]; then
 	set -x
 fi
 
-# getopts
+usage="./$(basename "$0") [-hbco] [-e engine] [-t format] --- pandoc thin wrapper in bash
+
+where:
+	-h	show this help message.
+	-t	specify the output format by its extension. e.g. md, pdf, tex, html.
+	-e	specify the latex engine used. Default: pdflatex. Other options: xelatex, lualatex.
+	-o	if specified, and if input and output format is identical, overwrite the original file.
+	-b	if specified, use biblatex.
+	-c	if specified, use pandoc-citeproc
+"
+
+# getopts ##############################################################
 
 ## reset getopts
 OPTIND=1
@@ -30,6 +41,12 @@ while getopts "bcoe:t:" opt; do
 		;;
 	t)	to_format=$OPTARG
 		;;
+	h)	printf "$usage"
+		exit 0
+		;;
+	*)	printf "$usage"
+		exit 1
+		;;
 	esac
 done
 
@@ -37,7 +54,8 @@ shift $((OPTIND-1))
 
 [ "$1" = "--" ] && shift
 
-# get paths and extension
+# get paths and extension ##############################################
+
 PATHNAME="$(realpath "$@")"
 PATHNAMEWOEXT="${PATHNAME%.*}"
 EXT="${PATHNAME##*.}"
@@ -45,6 +63,8 @@ DIRECTORY="${PATHNAME%/*}"
 filename="${PATHNAMEWOEXT##*/}"
 filenameASCII=$(echo $filename | sed -e 's/[^A-Za-z0-9._-]/_/g')
 # ext="${EXT,,}" #This does not work on Mac's default, old version of, bash.
+
+# Args #################################################################
 
 # define commonly used pandoc arg
 argFromMarkdown="-f markdown+abbreviations+autolink_bare_uris+markdown_attribute+mmd_header_identifiers+mmd_link_attributes+mmd_title_block+tex_math_double_backslash-fancy_lists"
@@ -78,7 +98,8 @@ if [[ "$pandoc_biblatex" = "true" ]]; then
 	arg+=" --biblatex"
 fi
 
-# output
+# output ###############################################################
+
 if [[ "$EXT" = "md" && ( "$to_format" = "html" || "$to_format" = "tex" || "$to_format" = "pdf" ) ]];  then
 	FILE=$(pandoc-criticmarkup.sh -d $to_format "$PATHNAME") # preprocess and read to a var
 	if [[ "$to_format" = "html" ]]; then
