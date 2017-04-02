@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# xtrace if DEBUG
+if [[ $DEBUG ]]; then
+	set -x
+fi
 
 # getopts
 
