@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-# xtrace if DEBUG
-if [[ $DEBUG ]]; then
-	set -x
-fi
-
 usage="./$(basename "$0") [-hbco] [-e engine] [-t format] --- pandoc thin wrapper in bash
 
 where:
