@@ -66,7 +66,7 @@ argFromMarkdown="-f markdown+abbreviations+autolink_bare_uris+markdown_attribute
 argToMarkdown="-t markdown-fancy_lists-raw_html-native_divs-native_spans-simple_tables-multiline_tables-grid_tables" # -simple_tables-multiline_tables-grid_tables-pipe_tables
 argToTeX="-V linkcolor=blue -V citecolor=blue -V urlcolor=blue -V toccolor=blue --filter=pandoc-amsthm.py"
 argToHTML="--mathjax"
-argAlways="--normalize -s --wrap=none --atx-headers --extract-media=$DIRECTORY/$filenameASCII"
+argAlways="-s --wrap=none --atx-headers --extract-media=$DIRECTORY/$filenameASCII"
 argAlwaysExceptNonMDToMD="-S --toc --toc-depth=6 -N"
 
 # set pandoc args
